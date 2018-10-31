@@ -60,12 +60,12 @@ function promptAndSave(args, templatetype: string) {
 
             var newfilepath = incomingpath + path.sep + newfilename;
 
+            newfilepath = correctExtension(newfilepath);
+
             if (fs.existsSync(newfilepath)) {
                 vscode.window.showErrorMessage("File already exists");
                 return;
             }
-
-            newfilepath = correctExtension(newfilepath);
 
             var originalfilepath = newfilepath;
 
