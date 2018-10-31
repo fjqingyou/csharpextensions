@@ -80,18 +80,33 @@ function promptAndSave(args, templatetype: string) {
 
             var newroot = projectrootdir.substr(projectrootdir.lastIndexOf(path.sep) + 1);
 
-            var filenamechildpath = newfilepath.substring(newfilepath.lastIndexOf(newroot));
 
-            var pathSepRegEx = /\//g;
-            if (os.platform() === "win32")
-                pathSepRegEx = /\\/g;
+            //namespace
+            var namespace = '';
+            let useStaticNameSpace = vscode.workspace.getConfiguration().get('csharpextensions.useDefaultStaticNamespace', false);
+            if(useStaticNameSpace){
+                let defaultStaticNamespace = vscode.workspace.getConfiguration().get("csharpextensions.defaultStaticNamespace", "");
+                if(defaultStaticNamespace != '${projectName}'){
+                    namespace = defaultStaticNamespace;
+                }else{
+                    namespace = path.basename(vscode.workspace.rootPath);
+                }
+            }
 
-            var namespace = path.dirname(filenamechildpath);
-            namespace = namespace.replace(pathSepRegEx, '.');
+            if(namespace == ''){
+                var filenamechildpath = newfilepath.substring(newfilepath.lastIndexOf(newroot));
+    
+                var pathSepRegEx = /\//g;
+                if (os.platform() === "win32")
+                    pathSepRegEx = /\\/g;
+                namespace = path.dirname(filenamechildpath);
+                namespace = namespace.replace(pathSepRegEx, '.');
+    
+                namespace = namespace.replace(/\s+/g, "_");
+                namespace = namespace.replace(/-/g, "_");
+            }
 
-            namespace = namespace.replace(/\s+/g, "_");
-            namespace = namespace.replace(/-/g, "_");
-
+            //file name
             newfilepath = path.basename(newfilepath, '.cs');
 
             openTemplateAndSaveNewFile(templatetype, namespace, newfilepath, originalfilepath);

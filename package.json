@@ -62,6 +62,16 @@
                     "type": "boolean",
                     "default": true,
                     "description": "If true the document will be reformatted after codeactions are used."
+                },
+                "csharpextensions.useDefaultStaticNamespace":{
+                    "type": "boolean",
+                    "default": false,
+                    "description": "if true namespace use static namespace"
+                },
+                "csharpextensions.defaultStaticNamespace":{
+                    "type": "string",
+                    "default": "${projectName}",
+                    "description": "default static namespace"
                 }
             }
         }
